@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+     <title>Car Insurance Fraud Detection!</title>
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/templatemo-style.css') }}">
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/vegas.min.css') }}">
+<!-- 
+
+Get Ready Template
+
+https://templatemo.com/tm-521-get-ready
+
+-->
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+     <meta name="description" content="">
+     <meta name="keywords" content="">
+     <meta name="team" content="">
+     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+     
+
+     <!-- MAIN CSS -->
+
+</head>
+<body>
+
+     <!-- PRE LOADER -->
+     <section class="preloader">
+          <div class="spinner">
+
+               <span class="spinner-rotate"></span>
+               
+          </div>
+     </section>
+
+
+     <!-- GRID LINE -->
+    <section class="grid">
+         <div class="container">
+            <div class="row">
+
+              <div class="col-md-2 col-sm-2">
+                <div class="grid-line"></div>
+              </div>
+              <div class="col-md-2 col-sm-2">
+                <div class="grid-line"></div>
+              </div>
+              <div class="col-md-2 col-sm-2">
+                <div class="grid-line"></div>
+              </div>
+              <div class="col-md-2 col-sm-2">
+                <div class="grid-line"></div>
+              </div>
+              <div class="col-md-2 col-sm-2">
+                <div class="grid-line"></div>
+              </div>
+
+            </div>
+         </div>
+    </section>
+
+
+    <div class="menu-bg"></div>
+    <div class="menu-burger">☰</div>
+
+    <div class="menu-items">
+       <div class="container">
+         <div class="row">
+           <div class="col-md-offset-2 col-md-4 col-sm-6">
+            <h1>Done By:</h1>
+             <a href="https://www.linkedin.com/in/hazem-chaabi/"color="white"> Hazem CHAABI </a><br><a href="https://www.linkedin.com/in/belarbisaif/">Saif Eddine BELAARBI </a>
+           </div>
+
+
+           <div class="col-md-4 col-sm-6">
+             <address>
+               <h1>Our School</h1>
+               <p>Rte Raoued Km 3,5 - 2083, <br> Ariana Tunisia</p>
+               <div class="google-map">
+                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3190.9350729818434!2d10.185577450592458!3d36.89190147013403!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12e2cb6fc49b7883%3A0x84da64ea383c01d2!2sHigher%20School%20of%20Communication%20of%20Tunis!5e0!3m2!1sen!2stn!4v1622558434102!5m2!1sen!2stn" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+               </div>
+             </address>
+           </div> 
+
+           
+         </div>
+       </div>
+    </div>
+
+
+     <!-- HOME -->
+     <section id="home">
+        <div class="overlay"></div>
+          <div class="container">
+               <div class="row">
+
+                    <div class="col-md-12 col-sm-12">
+                         <div class="home-info">
+                              <h1>This Claim is: <br>{{results}}</h1>
+                             
+                              <div>
+                               <h3>This Client is: {{proba}}% Fraudulent </h3>
+                              </div>
+                         </div>
+                    </div>
+
+               </div>
+          </div>
+     </section>
+
+     <!-- SCRIPTS -->
+     <script src="static/js/jquery.js"></script>
+     <script src="static/js/bootstrap.min.js"></script>
+     <script src="static/js/vegas.min.js"></script>
+     <script src="static/js/countdown.js"></script>
+     <script src="static/js/init.js"></script>
+     <script src="static/js/custom.js"></script>
+
+</body>
+</html>
