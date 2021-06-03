@@ -2,5 +2,4 @@ flask
 joblib
 lightgbm
 sklearn
-os
 pandas
