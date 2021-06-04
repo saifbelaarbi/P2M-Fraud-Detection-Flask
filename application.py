@@ -2,7 +2,6 @@ from flask import *
 import joblib
 import json
 import os
-from subprocess import STDOUT, check_call, Popen
 import pandas as pd
 app = Flask(__name__)
 
@@ -15,9 +14,6 @@ def index():
 @app.route('/data', methods=['POST'])
 def data():
 
-    proc = Popen('apt-get install -y libgomp1', shell=True, stdin=None,
-                            stdout=open(os.devnull, "wb"), stderr=STDOUT, executable="/bin/bash")
-    proc.wait()
     form_data = request.form
 
     model = joblib.load('./data/model_lgb.pkl')
