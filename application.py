@@ -1,6 +1,8 @@
 from flask import *
 import joblib
 import json
+import os
+from subprocess import STDOUT, check_call, Popen
 import pandas as pd
 app = Flask(__name__)
 
@@ -10,13 +12,12 @@ def index():
     return render_template('form.html')
 
 
-@app.route('/results/<percentage>')
-def results(percentage):
-    return percentage
-
-
 @app.route('/data', methods=['POST'])
 def data():
+
+    proc = Popen('apt-get install -y libgomp1', shell=True, stdin=None,
+                            stdout=open(os.devnull, "wb"), stderr=STDOUT, executable="/bin/bash")
+    proc.wait()
     form_data = request.form
 
     model = joblib.load('./data/model_lgb.pkl')
@@ -81,43 +82,49 @@ def data():
     inpt.loc[0, 'day_of_ps'] = ofps.day
 
     inpt.loc[0, 'police_report_available'] = form_data['police_report_available']
-    inpt['police_report_available'] = inpt['police_report_available'].map({'Yes': 1, 'No': 0}).astype(int)
-    inpt.loc[0,'Gender'] = form_data['Gender']
-    inpt['Gender'] = inpt['Gender'].map({'Male': 1, 'Female': 2, 'Fluid': 3, 'Other': 4}).astype(int)
+    inpt['police_report_available'] = inpt['police_report_available'].map(
+        {'Yes': 1, 'No': 0}).astype(int)
+    inpt.loc[0, 'Gender'] = form_data['Gender']
+    inpt['Gender'] = inpt['Gender'].map(
+        {'Male': 1, 'Female': 2, 'Fluid': 3, 'Other': 4}).astype(int)
 
-    inpt.loc[0,'Marital_Status'] = form_data['Marital_Status']
-    inpt['Marital_Status'] = inpt['Marital_Status'].map({'Single': 0,'Married': 1, 'Widowed': 2, 'Engaged': 3, 'Divorced': 4}).astype(int)
+    inpt.loc[0, 'Marital_Status'] = form_data['Marital_Status']
+    inpt['Marital_Status'] = inpt['Marital_Status'].map(
+        {'Single': 0, 'Married': 1, 'Widowed': 2, 'Engaged': 3, 'Divorced': 4}).astype(int)
 
-    inpt.loc[0,'Policy_Holder_Province'] = form_data['Policy_Holder_Province']
-    inpt.loc[0,'Policy_Holder_Area'] = form_data['Holder area']
-    inpt.loc[0,'Province'] = form_data['Province']
-    inpt.loc[0,'Area'] = form_data['Area']
+    inpt.loc[0, 'Policy_Holder_Province'] = form_data['Policy_Holder_Province']
+    inpt.loc[0, 'Policy_Holder_Area'] = form_data['Holder area']
+    inpt.loc[0, 'Province'] = form_data['Province']
+    inpt.loc[0, 'Area'] = form_data['Area']
 
-    
-    inpt['Policy_Holder_Area'] = inpt['Policy_Holder_Area'].replace(inp_ha, res_ha)
-    inpt.loc[0,'Policy_Holder_Area'] =int(inpt.loc[0,'Policy_Holder_Area'])
-    inpt['Policy_Holder_Area'] = ss_ha.fit_transform(inpt.Policy_Holder_Area.values.reshape(-1, 1))
+    inpt['Policy_Holder_Area'] = inpt['Policy_Holder_Area'].replace(
+        inp_ha, res_ha)
+    inpt.loc[0, 'Policy_Holder_Area'] = int(inpt.loc[0, 'Policy_Holder_Area'])
+    inpt['Policy_Holder_Area'] = ss_ha.fit_transform(
+        inpt.Policy_Holder_Area.values.reshape(-1, 1))
 
-    inpt['Policy_Holder_Province'] = inpt['Policy_Holder_Province'].replace(inp_hp, res_hp)
-    inpt['Policy_Holder_Province'] = ss_hp.fit_transform(inpt.Policy_Holder_Area.values.reshape(-1, 1))
+    inpt['Policy_Holder_Province'] = inpt['Policy_Holder_Province'].replace(
+        inp_hp, res_hp)
+    inpt['Policy_Holder_Province'] = ss_hp.fit_transform(
+        inpt.Policy_Holder_Area.values.reshape(-1, 1))
 
     inpt['Province'] = inpt['Province'].replace(inp_pro, res_pro)
-    inpt['Province'] = ss_pro.fit_transform(inpt.Policy_Holder_Area.values.reshape(-1, 1))
+    inpt['Province'] = ss_pro.fit_transform(
+        inpt.Policy_Holder_Area.values.reshape(-1, 1))
 
     inpt['Area'] = inpt['Area'].replace(inp_area, res_area)
-    inpt['Area'] = ss_area.fit_transform(inpt.Policy_Holder_Area.values.reshape(-1, 1))
-    inpt['Gender']=inpt['Gender'].astype("float64")
-    inpt['Marital_Status']=inpt['Marital_Status'].astype("float64")
-    for e in ['total_claim_amount','year_of_birth', 'month_of_birth', 'day_of_birth', 'year_of_ps','month_of_ps', 'day_of_ps', 'year_of_pe', 'month_of_pe', 'day_of_pe',
-                                 'year_of_Date_Of_Loss', 'month_of_Date_Of_Loss', 'day_of_Date_Of_Loss',
-                                 'year_of_Date_Of_Claim', 'month_of_Date_Of_Claim',
-                                 'day_of_Date_Of_Claim','witnesses','bodily_injuries','Kind_Of_Loss','Broker_ID','Policies_Revenue','Sum_Insured','Age']:
-        inpt[e]=inpt[e].astype('int64')
+    inpt['Area'] = ss_area.fit_transform(
+        inpt.Policy_Holder_Area.values.reshape(-1, 1))
+    inpt['Gender'] = inpt['Gender'].astype("float64")
+    inpt['Marital_Status'] = inpt['Marital_Status'].astype("float64")
+    for e in ['total_claim_amount', 'year_of_birth', 'month_of_birth', 'day_of_birth', 'year_of_ps', 'month_of_ps', 'day_of_ps', 'year_of_pe', 'month_of_pe', 'day_of_pe',
+              'year_of_Date_Of_Loss', 'month_of_Date_Of_Loss', 'day_of_Date_Of_Loss',
+              'year_of_Date_Of_Claim', 'month_of_Date_Of_Claim',
+              'day_of_Date_Of_Claim', 'witnesses', 'bodily_injuries', 'Kind_Of_Loss', 'Broker_ID', 'Policies_Revenue', 'Sum_Insured', 'Age']:
+        inpt[e] = inpt[e].astype('int64')
 
-
-    proba= 10000*model.predict(inpt)[0]
+    proba = 10000*model.predict(inpt)[0]
     proba = int(proba)
-    results = "Fraudulent" if proba>5000 else "Not Fraudulent"
+    results = "Fraudulent" if proba > 5000 else "Not Fraudulent"
 
     return render_template('output.html', results=results, proba=proba/100)
-
