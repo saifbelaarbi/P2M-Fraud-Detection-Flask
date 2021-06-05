@@ -1,7 +1,6 @@
 from flask import *
 import joblib
 import json
-import os
 import pandas as pd
 app = Flask(__name__)
 
@@ -10,6 +9,9 @@ app = Flask(__name__)
 def index():
     return render_template('form.html')
 
+@app.route('/results/<percentage>')
+def results(percentage):
+    return percentage
 
 @app.route('/data', methods=['POST'])
 def data():
