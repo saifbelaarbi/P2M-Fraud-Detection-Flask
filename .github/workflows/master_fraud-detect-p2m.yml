@@ -59,4 +59,4 @@ jobs:
         with:
           app-name: 'fraud-detect-p2m'
           slot-name: 'production'
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_7607b0aed3d546a6b3b0f4f9e69bc929 }}
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_4ef9f81fe06444de98b34df6e9c00dbd }}
